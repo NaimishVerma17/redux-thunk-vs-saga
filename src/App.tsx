@@ -8,9 +8,9 @@ import { fetchUsers, fetchUserFailed, fetchUserSuccess } from './actions';
 interface UserProps {
     users: { email: string }[],
     loading: boolean,
-    fetchUsers: () => any,
-    fetchUserSuccess: (users: { email: string }[]) => any,
-    fetchUserFailed: () => any,
+    fetchUsers: () => Object,
+    fetchUserSuccess: (users: { email: string }[]) => Object,
+    fetchUserFailed: () => Object,
 }
 
 const App: React.FC<UserProps> = ({ users, loading, fetchUsers, fetchUserSuccess, fetchUserFailed }: UserProps) => {
@@ -25,7 +25,7 @@ const App: React.FC<UserProps> = ({ users, loading, fetchUsers, fetchUserSuccess
     if (loading) {
         return <div>Loading...</div>;
     }
-    return <>{users.map((user: { email: string }) => <h4>{user.email}</h4>)}</>;
+    return <>{users.map((user: { email: string }) => <h4 key={user.email}>{user.email}</h4>)}</>;
 };
 
 const mapStateToProps = (state: AppState) => ({
