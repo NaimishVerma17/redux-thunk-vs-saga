@@ -1,11 +1,19 @@
 import getUsers from './api';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getLoadingSelector, getUsersSelector } from './selectors';
 import { AppState } from './store';
 import { fetchUsers, fetchUserFailed, fetchUserSuccess } from './actions';
 
-function App({ users, loading, fetchUsers, fetchUserSuccess, fetchUserFailed }: any) {
+interface UserProps {
+    users: { email: string }[],
+    loading: boolean,
+    fetchUsers: () => any,
+    fetchUserSuccess: (users: { email: string }[]) => any,
+    fetchUserFailed: () => any,
+}
+
+const App: React.FC<UserProps> = ({ users, loading, fetchUsers, fetchUserSuccess, fetchUserFailed }: UserProps) => {
     useEffect(() => {
         fetchUsers();
         getUsers().then(res => res.json())
@@ -17,8 +25,8 @@ function App({ users, loading, fetchUsers, fetchUserSuccess, fetchUserFailed }: 
     if (loading) {
         return <div>Loading...</div>;
     }
-    return users.map((user: { email: string }) => <h4>{user.email}</h4>);
-}
+    return <>{users.map((user: { email: string }) => <h4>{user.email}</h4>)}</>;
+};
 
 const mapStateToProps = (state: AppState) => ({
     users: getUsersSelector(state),

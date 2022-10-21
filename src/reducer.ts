@@ -1,6 +1,6 @@
 import { Action, FETCH_USER, FETCH_USER_FAILED, FETCH_USER_SUCCESS } from './actions';
 
-interface AppState {
+export interface AppState {
     users: { email: string }[];
     loading: boolean;
 }
