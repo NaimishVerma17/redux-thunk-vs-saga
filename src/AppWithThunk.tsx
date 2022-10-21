@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { getLoadingSelector, getUsersSelector } from './selectors';
 import { AppState } from './store';
 import { fetchUsersActionCreator } from './thunk';
@@ -7,13 +7,12 @@ import { fetchUsersActionCreator } from './thunk';
 interface ThunkUserProps {
     users: { email: string }[],
     loading: boolean,
+    fetchUsers: any
 }
 
-const AppWithThunk: React.FC<ThunkUserProps> = ({ users, loading }: ThunkUserProps) => {
-    const dispatch = useDispatch();
+const AppWithThunk: React.FC<ThunkUserProps> = ({ users, loading, fetchUsers }: ThunkUserProps) => {
     useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchUsersActionCreator());
+        fetchUsers();
     }, []);
 
     if (loading) {
@@ -27,4 +26,8 @@ const mapStateToProps = (state: AppState) => ({
     loading: getLoadingSelector(state)
 });
 
-export default connect(mapStateToProps)(AppWithThunk);
+const mapDispatchToProps =  {
+    fetchUsers: fetchUsersActionCreator
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppWithThunk);
